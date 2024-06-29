@@ -48,3 +48,18 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Modules used
+
+- npm install @react-navigation/native
+- npx expo install react-native-screens react-native-safe-area-context
+- npm install @react-navigation/native-stack
+- npm install styled-components
+- npm install nativewind
+- npm install --save-dev tailwindcss@3.3.2
+- npm install react-native-vector-icons
+- npm install @rneui/themed @rneui/base
+- npm i react-native-simple-default-props
+- npx expo install expo-font
+
+
