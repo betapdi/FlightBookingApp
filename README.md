@@ -61,5 +61,6 @@ Join our community of developers creating universal apps.
 - npm install @rneui/themed @rneui/base
 - npm i react-native-simple-default-props
 - npx expo install expo-font
+- npm install -g expo-cli
 
 
