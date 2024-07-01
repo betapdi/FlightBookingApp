@@ -62,5 +62,7 @@ Join our community of developers creating universal apps.
 - npm i react-native-simple-default-props
 - npx expo install expo-font
 - npm install -g expo-cli
+- npm install @react-native-picker/picker --save
+- npx expo install @react-native-community/datetimepicker
 
 

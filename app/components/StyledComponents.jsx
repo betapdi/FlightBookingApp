@@ -5,7 +5,7 @@ const StyleText = styled(Text);
 const StyleView = styled(View);
 
 export const StyledText = ({ className, ...props }) => {
-    return <StyleText className = {`${className}`} {...props}/>
+    return <StyleText className = {`font-pmedium ${className}`} {...props}/>
 }
 
 export const StyledView = ({ className, ...props }) => {
