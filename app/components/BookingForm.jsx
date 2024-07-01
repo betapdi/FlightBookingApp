@@ -3,7 +3,7 @@ import { StyledText, StyledView } from './StyledComponents'
 import { Box } from './Box'
 import { TextInput } from 'react-native'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from './DatePicker'
 import { Ionicons, Feather, MaterialCommunityIcons, MaterialIcons, SimpleLineIcons, FontAwesome6 } from '@expo/vector-icons'
@@ -26,39 +26,52 @@ const BookingForm = ({ className, ...props }) => {
   const [numPet, setNumPet] = useState(0);
   const [numLuggage, setNumLuggage] = useState(0);
 
-  const personColor = (numPerson > 0 ? "#089083" : "#727272")
-  const babyColor = (numBaby > 0 ? "#089083" : "#727272")
-  const petColor = (numPet > 0 ? "#089083" : "#727272")
-  const luggageColor = (numLuggage > 0 ? "#089083" : "#727272")
+  const personColor = (numPerson > 0 ? "border-[#089083]" : "border-[#727272]")
+  const babyColor = (numBaby > 0 ? "border-[#089083]" : "border-[#727272]")
+  const petColor = (numPet > 0 ? "border-[#089083]" : "border-[#727272]")
+  const luggageColor = (numLuggage > 0 ? "border-[#089083]" : "border-[#727272]")
+  const detachBorder = (borderColor) => {
+    // console.log(borderColor.substring(8, 15))
+    return borderColor.substring(8, 15);
+  }
 
   //Class value
-  const [flightClass, setFlightClass] = useState("");
-  const economyValue = (flightClass == "Economy" ? {bgColor: "#089486", textColor: "#ffffff"} : {bgColor: "#FFFFFF", textColor: "#089083"});
-  const businessValue = (flightClass == "Business" ? {bgColor: "#089486", textColor: "#ffffff"} : {bgColor: "#FFFFFF", textColor: "#089083"});
+  const [flightClass, setFlightClass] = useState([
+    {
+      name: "Economy",
+      bgColor: "bg-[#ffffff]",
+      textColor: "text-[#089083]",
+    },
+
+    {
+      name: "Business",
+      bgColor: "bg-[#ffffff]",
+      textColor: "text-[#089083]",
+    }
+  ]);
 
   //Transport value
-  const [transport, setTransport] = useState(4);
-  const chosenTransport = [
+  const [transport, setTransport] = useState([
     {
-      bgColor: (transport == 0 ? "#089486" : "#FFFFFF"),
-      iconColor: (transport == 0 ? "#ffffff" : "#089083"),
+      bgColor: "bg-[#ffffff]",
+      iconColor: "#089083",
     },
 
     {
-      bgColor: (transport == 1 ? "#089486" : "#FFFFFF"),
-      iconColor: (transport == 1 ? "#ffffff" : "#089083"),
+      bgColor: "bg-[#ffffff]",
+      iconColor: "#089083",
     },
 
     {
-      bgColor: (transport == 2 ? "#089486" : "#FFFFFF"),
-      iconColor: (transport == 2 ? "#ffffff" : "#089083"),
+      bgColor: "bg-[#ffffff]",
+      iconColor: "#089083",
     },
 
     {
-      bgColor: (transport == 3 ? "#089486" : "#FFFFFF"),
-      iconColor: (transport == 3 ? "#ffffff" : "#089083"),
+      bgColor: "bg-[#ffffff]",
+      iconColor: "#089083",
     },
-  ]
+  ]);
 
   const swapCity = () => {
     const tempCity = fromCity;
@@ -75,14 +88,54 @@ const BookingForm = ({ className, ...props }) => {
   }
 
   const onPressClass = (currentClass) => {
-    // console.log(currentClass, flightClass)
-    if (currentClass == flightClass) setFlightClass("");
-    else setFlightClass(currentClass);
+    const newState = flightClass.map((curr, id) => {
+      if (curr.name === currentClass) {
+        if (curr.bgColor == "bg-[#089083]") return {
+          name: curr.name,
+          bgColor: "bg-[#ffffff]",
+          textColor: "text-[#089083]",
+        }
+
+        else return {
+          name: curr.name,
+          bgColor: "bg-[#089083]",
+          textColor: "text-[#FFFFFF]",
+        }
+      }
+
+      else return {
+        name: curr.name,
+        bgColor: "bg-[#ffffff]",
+        textColor: "text-[#089083]",
+      }
+    });
+
+    setFlightClass(newState);
+
+    // console.log(newState[0].textColor)
   }
 
   const onPressTransport = (currentTransport) => {
-    if (currentTransport == transport) setTransport(4);
-    else setTransport(currentTransport);
+    const newState = transport.map((curr, id) => {
+      if (id === currentTransport) {
+        if (curr.bgColor == "bg-[#089083]") return {
+          bgColor: "bg-[#ffffff]",
+          iconColor: "#089083",
+        }
+        
+        else return {
+          bgColor: "bg-[#089083]",
+          iconColor: "#FFFFFF",
+        }
+      }
+
+      else return {
+        bgColor: "bg-[#ffffff]",
+        iconColor: "#089083",
+      }
+    });
+
+    setTransport(newState);
   }
 
   return (
@@ -130,23 +183,23 @@ const BookingForm = ({ className, ...props }) => {
       <StyledView className="text-left w-full mt-8">
         <StyledText className = "text-[#727272] font-bold text-base">Passenger & Luggage</StyledText>
         <StyledView className = "flex flex-row justify-start mt-2 mb-1">
-          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row border-[${personColor}]`}>
-            <Feather name = "user" size = {25} color={`${personColor}`}/>
+          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row ${personColor}`}>
+            <Feather name = "user" size = {25} style={{color: detachBorder(personColor)}}/>
             <TextInput keyboardType='numeric' maxLength={2} className = "ml-2 flex-1 h-5 p-0 text-[#089083]" onChangeText = {setNumPerson} value = {numPerson}/>
           </StyledView>
 
-          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row border-[${babyColor}]`}>
-            <MaterialCommunityIcons name = "baby-face-outline" size = {25} color={`${babyColor}`}/>
+          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row ${babyColor}`}>
+            <MaterialCommunityIcons name = "baby-face-outline" size = {25} style={{color: detachBorder(babyColor)}}/>
             <TextInput keyboardType='numeric' maxLength={2} className = "ml-2 flex-1 h-5 p-0 text-[#089083]" onChangeText = {setNumBaby} value = {numBaby}/>
           </StyledView>
 
-          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row border-[${petColor}]`}>
-            <MaterialCommunityIcons name = "dog" size = {25} color={`${petColor}`}/>
+          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row ${petColor}`}>
+            <MaterialCommunityIcons name = "dog" size = {25} style={{color: detachBorder(petColor)}}/>
             <TextInput keyboardType='numeric' maxLength={2} className = "ml-2 flex-1 h-5 p-0 text-[#089083]" onChangeText = {setNumPet} value = {numPet}/>
           </StyledView>
           
-          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row border-[${luggageColor}]`}>
-            <MaterialIcons name = "luggage" size = {25} color={`${luggageColor}`}/>
+          <StyledView className= {`border-b basis-1/6 mr-4 flex flex-row ${luggageColor}`}>
+            <MaterialIcons name = "luggage" size = {25} style={{color: detachBorder(luggageColor)}}/>
             <TextInput keyboardType='numeric' maxLength={2} className = "ml-2 flex-1 h-5 p-0 text-[#089083]" onChangeText = {setNumLuggage} value = {numLuggage}/>
           </StyledView>
         </StyledView>
@@ -155,12 +208,13 @@ const BookingForm = ({ className, ...props }) => {
       <StyledView className = "w-full text-left mt-8">
         <StyledText className = "text-[#727272] font-bold text-base">Class</StyledText>
           <StyledView className = "flex flex-row justify-start mt-2 mb-1">
-            <Pressable onPress = {() => onPressClass("Economy")} className = {`bg-[${economyValue.bgColor}] basis-1/3 rounded-xl mr-4 py-2 px-2`}>
-              <StyledText className= {`text-center text-[${economyValue.textColor}]`}>Economy</StyledText>
+            {console.log(flightClass[0].bgColor)}
+            <Pressable onPress = {() => onPressClass("Economy")} className = {` basis-1/3 rounded-xl mr-4 py-2 px-2 ${flightClass[0].bgColor}`}>
+              <StyledText className= {`text-center ${flightClass[0].textColor}`}>Economy</StyledText>
             </Pressable>
 
-            <Pressable onPress = {() => onPressClass("Business")} className = {`bg-[${businessValue.bgColor}] basis-1/3 rounded-xl mr-4 py-2 px-2`}>
-              <StyledText className= {`text-center text-[${businessValue.textColor}]`}>Business</StyledText>
+            <Pressable onPress = {() => onPressClass("Business")} className = {`${flightClass[1].bgColor} basis-1/3 rounded-xl mr-4 py-2 px-2`}>
+              <StyledText className= {`text-center ${flightClass[1].textColor}`}>Business</StyledText>
             </Pressable>
           </StyledView>
       </StyledView>
@@ -169,33 +223,33 @@ const BookingForm = ({ className, ...props }) => {
         <StyledText className = "text-[#727272] font-bold text-base">Transport</StyledText>
         <StyledView className = "flex flex-row justify-start mt-2 mb-1">
           <Pressable onPress = {() => onPressTransport(0)} className = "basis-[14%] mr-4">
-            <StyledView className = {`justify-center items-center text-center bg-[${chosenTransport[0].bgColor}] rounded-xl`}>
+            <StyledView className = {`justify-center items-center text-center ${transport[0].bgColor} rounded-xl`}>
               <StyledView className = "py-2">
-                <SimpleLineIcons name = "plane" size = {30} color={`${chosenTransport[0].iconColor}`} />
+                <SimpleLineIcons name = "plane" size = {30} color={`${transport[0].iconColor}`} />
               </StyledView>
             </StyledView>
           </Pressable>
 
           <Pressable onPress = {() => onPressTransport(1)} className = "basis-[14%] mr-4">
-            <StyledView className = {`justify-center items-center text-center bg-[${chosenTransport[1].bgColor}] rounded-xl`}>
+            <StyledView className = {`justify-center items-center text-center ${transport[1].bgColor} rounded-xl`}>
               <StyledView className = "py-2">
-                <FontAwesome6 name = "ship" size = {30} color={`${chosenTransport[1].iconColor}`} />
+                <FontAwesome6 name = "ship" size = {30} color={`${transport[1].iconColor}`} />
               </StyledView>
             </StyledView>
           </Pressable>
 
           <Pressable onPress = {() => onPressTransport(2)} className = "basis-[14%] mr-4">
-            <StyledView className = {`justify-center items-center text-center bg-[${chosenTransport[2].bgColor}] rounded-xl`}>
+            <StyledView className = {`justify-center items-center text-center ${transport[2].bgColor} rounded-xl`}>
               <StyledView className = "py-2">
-                <MaterialIcons name = "train" size = {30} color={`${chosenTransport[2].iconColor}`} />
+                <MaterialIcons name = "train" size = {30} color={`${transport[2].iconColor}`} />
               </StyledView>
             </StyledView>
           </Pressable>
 
           <Pressable onPress = {() => onPressTransport(3)} className = "basis-[14%] mr-4">
-            <StyledView className = {`justify-center items-center text-center bg-[${chosenTransport[3].bgColor}] rounded-xl`}>
+            <StyledView className = {`justify-center items-center text-center ${transport[3].bgColor} rounded-xl`}>
               <StyledView className = "py-2">
-                <Ionicons name = "bus-outline" size = {30} color={`${chosenTransport[3].iconColor}`} />
+                <Ionicons name = "bus-outline" size = {30} color={`${transport[3].iconColor}`} />
               </StyledView>
             </StyledView>
           </Pressable>
