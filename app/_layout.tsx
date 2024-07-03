@@ -3,6 +3,8 @@ import { useFonts } from "expo-font"
 import { useEffect } from 'react'
 
 import { SplashScreen, Stack } from "expo-router";
+import {BookingProvider} from './context/BookingContext'
+import GenerateData from './gen/GenerateData'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,10 +38,13 @@ const RootLayout = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-      <Stack.Screen name="(booking)" options={{headerShown: false}}/>
-    </Stack>
+    <BookingProvider>
+      <GenerateData/>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+        <Stack.Screen name="(booking)" options={{headerShown: false}}/>
+      </Stack>
+    </BookingProvider>
   )
 }
 

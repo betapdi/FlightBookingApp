@@ -1,30 +1,31 @@
-import { Pressable, StyleSheet, Text, View, Button } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { StyledText, StyledView } from './StyledComponents'
-import { Box } from './Box'
+import { Button } from './Button'
 import { TextInput } from 'react-native'
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { BookingContext } from '../context/BookingContext'
+import { useContext } from 'react'
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from './DatePicker'
 import { Ionicons, Feather, MaterialCommunityIcons, MaterialIcons, SimpleLineIcons, FontAwesome6 } from '@expo/vector-icons'
+import { router } from 'expo-router'
+import { CityList } from '../constants/CityList'
 
 const BookingForm = ({ className, ...props }) => {
   // console.log(props)
-  const [text, setText] = useState("haha");
-
   //City value
-  const [fromCity, setFromCity] = useState("");
-  const [toCity, setToCity] = useState("");
+  const {fromCity, setFromCity} = useContext(BookingContext)
+  const {toCity, setToCity} = useContext(BookingContext)
 
   //Date Value
-  const [departureDate, setDepartureDate] = useState(new Date());
-  const [returnDate, setReturnDate] = useState(new Date());
+  const {departureDate, setDepartureDate} = useContext(BookingContext)
+  const {returnDate, setReturnDate} = useContext(BookingContext)
 
   //Passengers value
-  const [numPerson, setNumPerson] = useState(0);
-  const [numBaby, setNumBaby] = useState(0);
-  const [numPet, setNumPet] = useState(0);
-  const [numLuggage, setNumLuggage] = useState(0);
+  const {numPerson, setNumPerson} = useContext(BookingContext)
+  const {numBaby, setNumBaby} = useContext(BookingContext)
+  const {numPet, setNumPet} = useContext(BookingContext)
+  const {numLuggage, setNumLuggage} = useContext(BookingContext)
 
   const personColor = (numPerson > 0 ? "border-[#089083]" : "border-[#727272]")
   const babyColor = (numBaby > 0 ? "border-[#089083]" : "border-[#727272]")
@@ -36,42 +37,10 @@ const BookingForm = ({ className, ...props }) => {
   }
 
   //Class value
-  const [flightClass, setFlightClass] = useState([
-    {
-      name: "Economy",
-      bgColor: "bg-[#ffffff]",
-      textColor: "text-[#089083]",
-    },
-
-    {
-      name: "Business",
-      bgColor: "bg-[#ffffff]",
-      textColor: "text-[#089083]",
-    }
-  ]);
+  const {flightClass, setFlightClass} = useContext(BookingContext)
 
   //Transport value
-  const [transport, setTransport] = useState([
-    {
-      bgColor: "bg-[#ffffff]",
-      iconColor: "#089083",
-    },
-
-    {
-      bgColor: "bg-[#ffffff]",
-      iconColor: "#089083",
-    },
-
-    {
-      bgColor: "bg-[#ffffff]",
-      iconColor: "#089083",
-    },
-
-    {
-      bgColor: "bg-[#ffffff]",
-      iconColor: "#089083",
-    },
-  ]);
+  const {transport, setTransport} = useContext(BookingContext)
 
   const swapCity = () => {
     const tempCity = fromCity;
@@ -138,6 +107,10 @@ const BookingForm = ({ className, ...props }) => {
     setTransport(newState);
   }
 
+  const onPressSearch = () => {
+    router.push('/(booking)/Transport/FlightScreen')
+  }
+
   return (
     <StyledView style = {props.style} className = " w-11/12 mt-14 items-center text-center">
       <StyledText className = "text-xl font-bold">Transport Booking</StyledText>
@@ -156,8 +129,9 @@ const BookingForm = ({ className, ...props }) => {
             selectedValue={fromCity}
             dropdownIconColor='white'
             onValueChange={(itemValue, itemIndex) => setFromCity(itemValue)}>
-            <Picker.Item label="New York (NYC)" value="NYC" />
-            <Picker.Item label="LONDON (LDN)" value="LDN" />
+            {CityList.map((city, id) => {
+              return <Picker.Item label={`${city.fullName + '(' + city.id + ')'}`} value={`${city.id}`} key = {id} />
+            })}
           </Picker>
         </StyledView>
 
@@ -169,8 +143,9 @@ const BookingForm = ({ className, ...props }) => {
             selectedValue={toCity}
             dropdownIconColor='white'
             onValueChange={(itemValue, itemIndex) => setToCity(itemValue)}>
-            <Picker.Item label="New York (NYC)" value="NYC" />
-            <Picker.Item label="LONDON (LDN)" value="LDN" />
+            {CityList.map((city, id) => {
+              return <Picker.Item label={`${city.fullName + '(' + city.id + ')'}`} value={`${city.id}`} key = {id} />
+            })}
           </Picker>
         </StyledView>
 
@@ -208,7 +183,6 @@ const BookingForm = ({ className, ...props }) => {
       <StyledView className = "w-full text-left mt-8">
         <StyledText className = "text-[#727272] font-bold text-base">Class</StyledText>
           <StyledView className = "flex flex-row justify-start mt-2 mb-1">
-            {console.log(flightClass[0].bgColor)}
             <Pressable onPress = {() => onPressClass("Economy")} className = {` basis-1/3 rounded-xl mr-4 py-2 px-2 ${flightClass[0].bgColor}`}>
               <StyledText className= {`text-center ${flightClass[0].textColor}`}>Economy</StyledText>
             </Pressable>
@@ -257,11 +231,7 @@ const BookingForm = ({ className, ...props }) => {
         </StyledView>
       </StyledView>
 
-      <StyledView className = "mt-8 w-full">
-        <Pressable className = "items-center justify-center text-center rounded-2xl bg-[#FEA36B]">
-          <StyledText className = "py-3 font-bold text-lg text-white">Search</StyledText>
-        </Pressable>
-      </StyledView>
+      <Button text = "Search" onPress = {onPressSearch}/>
     </StyledView>
   )
 }
