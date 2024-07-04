@@ -210,7 +210,7 @@ const SelectScreen = ({className, ...props}) => {
               <FlatList data = {seats}
                 horizontal
                 renderItem={(item) => <Person item = {item.item}/>}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id * 100}
                 showsHorizontalScrollIndicator={false}
               />
             </StyledView>

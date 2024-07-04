@@ -10,6 +10,7 @@ import DatePicker from './DatePicker'
 import { Ionicons, Feather, MaterialCommunityIcons, MaterialIcons, SimpleLineIcons, FontAwesome6 } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { CityList } from '../constants/CityList'
+import { ToastAndroid } from 'react-native'
 
 const BookingForm = ({ className, ...props }) => {
   // console.log(props)
@@ -38,7 +39,7 @@ const BookingForm = ({ className, ...props }) => {
 
   //Class value
   const {flightClasses, setFlightClasses} = useContext(BookingContext)
-  const {setFlightClass} = useContext(BookingContext);
+  const {flightClass, setFlightClass} = useContext(BookingContext);
 
   //Transport value
   const {transport, setTransport} = useContext(BookingContext)
@@ -60,10 +61,13 @@ const BookingForm = ({ className, ...props }) => {
   const onPressClass = (currentClass) => {
     const newState = flightClasses.map((curr, id) => {
       if (curr.name === currentClass) {
-        if (curr.bgColor == "bg-[#089083]") return {
-          name: curr.name,
-          bgColor: "bg-[#ffffff]",
-          textColor: "text-[#089083]",
+        if (curr.bgColor == "bg-[#089083]") {
+          setFlightClass("");
+          return {
+            name: curr.name,
+            bgColor: "bg-[#ffffff]",
+            textColor: "text-[#089083]",
+          }
         }
 
         else {
@@ -112,7 +116,10 @@ const BookingForm = ({ className, ...props }) => {
   }
 
   const onPressSearch = () => {
-    router.push('/(booking)/Transport/FlightScreen')
+    if (returnDate.getTime() < departureDate.getTime()) ToastAndroid.show("Return Date must be after Departure Date", ToastAndroid.LONG);
+    else if (numPerson == 0) ToastAndroid.show("Number of Adults must be greater than 0", ToastAndroid.LONG);
+    else if (flightClass == "") ToastAndroid.show("Please choose Class", ToastAndroid.LONG);
+    else router.push('/(booking)/Transport/FlightScreen')
   }
 
   const onPressBack = () => {

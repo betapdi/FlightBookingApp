@@ -30,7 +30,7 @@ export const BookingProvider = ({ children }) => {
     const [flightSeats, setFlightSeats] = useState([]);
 
       //Class value
-  const [flightClass, setFlightClass] = useState();
+  const [flightClass, setFlightClass] = useState("");
   const [flightClasses, setFlightClasses] = useState([
     {
       name: "Economy",

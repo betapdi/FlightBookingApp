@@ -4,7 +4,7 @@ import React from 'react'
 import { StyledText, StyledView } from '../../components/StyledComponents'
 import { Image } from 'react-native'
 import { FlatList } from 'react-native'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useState } from 'react'
 import BookingForm from '../../components/BookingForm'
 
@@ -37,17 +37,22 @@ const BookingScreen = () => {
   const stateFlatList = (bookForm ? "hidden" : "");
   const stateForm = (!bookForm ? "hidden" : "");
 
-  const handlePressCard = () => {
-    setBookForm(!bookForm);
+  const handlePressCard = (card) => {
+    if (card == "Transports_Card")
+      setBookForm(!bookForm);
+
+    else if (card == "Hotels_Card") router.push("/(temp)/TempScreen/Hotel")
+    else if (card == "Trips_Card") router.push("/(temp)/TempScreen/Trip")
+    else router.push("/(temp)/TempScreen/Event")
   }
 
   const Card = (props) => {
-    // console.log(props.source)
+    // console.log(props)
     return (
       // <Link href = "/Transport/TransportScreen">
-      <Pressable onPress={() => handlePressCard()}>
+      <Pressable onPress={() => handlePressCard(props.item.id)}>
         <StyledView className="pb-4">
-          <Image source={props.source}/>
+          <Image source={props.item.source}/>
         </StyledView>
       </Pressable>
       // </Link>
@@ -59,7 +64,7 @@ const BookingScreen = () => {
     <StyledView className="w-full items-center"> 
       <StyledView className = {`${stateFlatList}`}>
         <FlatList data = {CardData} 
-          renderItem={({item}) => <Card source = {item.source}/>}
+          renderItem={({item}) => <Card item = {item}/>}
           keyExtractor={item => item.id}
         />
       </StyledView>
