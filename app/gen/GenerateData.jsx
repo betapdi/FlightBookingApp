@@ -18,7 +18,8 @@ const generateData = () => {
     const currentDate = new Date();
     
     const data = [];
-    for (let i = 0; i < 30; i++) {
+    let cnt = 0;
+    for (let i = 0; i < 5; i++) {
         const date = new Date(currentDate);
         date.setDate(date.getDate() + i);
         for (let from of AirportArr) {
@@ -26,8 +27,10 @@ const generateData = () => {
                 if (from !== to) {
                     for (let classType of ["Economy", "Business"]) {
                         const numFlights = Math.floor(Math.random() * 10) + 1;
-                        for (let i = 0; i < numFlights; i++) {
+                        for (let j = 0; j < numFlights; j++) {
+                            ++cnt;
                             data.push({
+                                id: cnt,
                                 from: from,
                                 to: to,
                                 date: date,
@@ -65,6 +68,25 @@ const GenerateData = (props) => {
   return (
     <></>
   )
+}
+
+export const genSeatsState = () => {
+    const seatsState = [];
+    let numRows = 12;
+    // console.log(seatsState[0].seats)
+
+    for (let i = 1; i <= numRows; ++i) {
+        const currSeats = [];
+        for (let j = 0; j < 4; ++j) {
+            const currState = (Math.floor(Math.random() * 10) <= 3 ? "Booked" : "Available");
+            currSeats.push({state: currState});
+        }
+
+        seatsState.push({id: i, seats: currSeats});
+    }
+
+    // console.log(seatsState[29].seats)
+    return seatsState;
 }
 
 export default GenerateData

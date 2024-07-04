@@ -37,7 +37,8 @@ const BookingForm = ({ className, ...props }) => {
   }
 
   //Class value
-  const {flightClass, setFlightClass} = useContext(BookingContext)
+  const {flightClasses, setFlightClasses} = useContext(BookingContext)
+  const {setFlightClass} = useContext(BookingContext);
 
   //Transport value
   const {transport, setTransport} = useContext(BookingContext)
@@ -57,7 +58,7 @@ const BookingForm = ({ className, ...props }) => {
   }
 
   const onPressClass = (currentClass) => {
-    const newState = flightClass.map((curr, id) => {
+    const newState = flightClasses.map((curr, id) => {
       if (curr.name === currentClass) {
         if (curr.bgColor == "bg-[#089083]") return {
           name: curr.name,
@@ -65,10 +66,13 @@ const BookingForm = ({ className, ...props }) => {
           textColor: "text-[#089083]",
         }
 
-        else return {
-          name: curr.name,
-          bgColor: "bg-[#089083]",
-          textColor: "text-[#FFFFFF]",
+        else {
+          setFlightClass(curr.name);
+          return {
+            name: curr.name,
+            bgColor: "bg-[#089083]",
+            textColor: "text-[#FFFFFF]",
+          }
         }
       }
 
@@ -79,7 +83,7 @@ const BookingForm = ({ className, ...props }) => {
       }
     });
 
-    setFlightClass(newState);
+    setFlightClasses(newState);
 
     // console.log(newState[0].textColor)
   }
@@ -111,9 +115,18 @@ const BookingForm = ({ className, ...props }) => {
     router.push('/(booking)/Transport/FlightScreen')
   }
 
+  const onPressBack = () => {
+    props.backClick();
+  }
+
   return (
     <StyledView style = {props.style} className = " w-11/12 mt-14 items-center text-center">
-      <StyledText className = "text-xl font-bold">Transport Booking</StyledText>
+      <StyledView className = "w-full flex flex-row justify-start items-center">
+        <Pressable onPress = {onPressBack} style = {{flexBasis:'30%'}}>
+          <Ionicons name="chevron-back" size = {25}/>
+        </Pressable>
+        <Text className = "mt-6 font-bold text-xl ">Transport Booking</Text>
+      </StyledView>
       {/* <TextInput className = "border" onChangeText = {setText} value = {text}/> */}
       <StyledView className = " w-full items-center text-center mt-5">
         <StyledView className = "bg-[#FEA36B] absolute top-9 right-5 rounded-lg z-10">
@@ -183,12 +196,12 @@ const BookingForm = ({ className, ...props }) => {
       <StyledView className = "w-full text-left mt-8">
         <StyledText className = "text-[#727272] font-bold text-base">Class</StyledText>
           <StyledView className = "flex flex-row justify-start mt-2 mb-1">
-            <Pressable onPress = {() => onPressClass("Economy")} className = {` basis-1/3 rounded-xl mr-4 py-2 px-2 ${flightClass[0].bgColor}`}>
-              <StyledText className= {`text-center ${flightClass[0].textColor}`}>Economy</StyledText>
+            <Pressable onPress = {() => onPressClass("Economy")} className = {` basis-1/3 rounded-xl mr-4 py-2 px-2 ${flightClasses[0].bgColor}`}>
+              <StyledText className= {`text-center ${flightClasses[0].textColor}`}>Economy</StyledText>
             </Pressable>
 
-            <Pressable onPress = {() => onPressClass("Business")} className = {`${flightClass[1].bgColor} basis-1/3 rounded-xl mr-4 py-2 px-2`}>
-              <StyledText className= {`text-center ${flightClass[1].textColor}`}>Business</StyledText>
+            <Pressable onPress = {() => onPressClass("Business")} className = {`${flightClasses[1].bgColor} basis-1/3 rounded-xl mr-4 py-2 px-2`}>
+              <StyledText className= {`text-center ${flightClasses[1].textColor}`}>Business</StyledText>
             </Pressable>
           </StyledView>
       </StyledView>

@@ -5,8 +5,9 @@ import { useContext, createContext, useState } from 'react'
 export const BookingContext = createContext({});
 
 export const BookingProvider = ({ children }) => {
-    //Flight Data
+    //Flight Data (Generated Data)
     const [flights, setFlights] = useState(null);
+    const [chosenFlight, setChosenFlight] = useState(null);
 
     //City value
     const [fromCity, setFromCity] = useState("NYC");
@@ -22,8 +23,15 @@ export const BookingProvider = ({ children }) => {
     const [numPet, setNumPet] = useState(0);
     const [numLuggage, setNumLuggage] = useState(0);
 
+    //Passenger Seats
+    const [seats, setSeats] = useState([]);
+
+    //Flight seats state
+    const [flightSeats, setFlightSeats] = useState([]);
+
       //Class value
-  const [flightClass, setFlightClass] = useState([
+  const [flightClass, setFlightClass] = useState();
+  const [flightClasses, setFlightClasses] = useState([
     {
       name: "Economy",
       bgColor: "bg-[#ffffff]",
@@ -61,10 +69,10 @@ export const BookingProvider = ({ children }) => {
   ]);
 
     return (
-        <BookingContext.Provider value = {{fromCity, setFromCity, toCity, setToCity,
-            departureDate, setDepartureDate, returnDate, setReturnDate, numPerson, setNumPerson,
-            numBaby, setNumBaby, numPet, setNumPet, numLuggage, setNumLuggage, flightClass, setFlightClass,
-            transport, setTransport, flights, setFlights}}>
+        <BookingContext.Provider value = {{fromCity, setFromCity, toCity, setToCity, chosenFlight, setChosenFlight,
+            departureDate, setDepartureDate, returnDate, setReturnDate, numPerson, setNumPerson, flightClass, setFlightClass,
+            numBaby, setNumBaby, numPet, setNumPet, numLuggage, setNumLuggage, flightClasses, setFlightClasses,
+            transport, setTransport, flights, setFlights, seats, setSeats, flightSeats, setFlightSeats}}>
             {children}
         </BookingContext.Provider>
     )

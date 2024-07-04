@@ -1,24 +1,24 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { StyledView, StyledText } from '../../components/StyledComponents'
 import React from 'react'
-import { useState } from 'react'
-import { TimeFrames } from '../../constants/TimeFrames'
-import { ScrollView } from 'react-native'
+import { useContext } from 'react'
+import { FilterContext } from '../../context/FilterContext'
 import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import Checkbox from '../../components/Checkbox'
 import { Button } from '../../components/Button'
 import { SortProperties } from '../../constants/SortProperties'
 import { BtnColor } from '../../constants/BtnColor'
+import { router } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
 
 const FilterScreen = ({className, ...props}) => {
-  const [departTimeFrames, setDepartTimeFrames] = useState(TimeFrames);
-  const [arriveTimeFrames, setArriveTimeFrames] = useState(TimeFrames);
+  const {departTimeFrames, arriveTimeFrames}= useContext(FilterContext)
 
-  const [departFrame, setDepartFrame] = useState(departTimeFrames[0]);
-  const [arriveFrame, setArriveFrame] = useState(arriveTimeFrames[0]);
+  const {departFrame, setDepartFrame} = useContext(FilterContext)
+  const {arriveFrame, setArriveFrame} = useContext(FilterContext)
 
-  const [prices, setPrices] = useState([50, 150]);
-  const [sortBy, setSortBy] = useState(SortProperties);
+  const {prices, setPrices} = useContext(FilterContext)
+  const {sortBy, setSortBy} = useContext(FilterContext)
 
   const onPressReset = () => {
     setDepartFrame(departTimeFrames[0]);
@@ -26,6 +26,10 @@ const FilterScreen = ({className, ...props}) => {
 
     setPrices([50, 150]);
     setSortBy(SortProperties);
+  }
+
+  const onPressDone = () => {
+    props.changeScreen("flight");
   }
 
   const Btn = ({timeFrame, setFrame, chosenFrame}) => {
@@ -54,9 +58,18 @@ const FilterScreen = ({className, ...props}) => {
     // console.log(index);
   }
 
+  const onPressBack = () => {
+    props.changeScreen("flight")
+  }
+
   return (
     <StyledView style = {props.style} className = {`${className} w-11/12 mt-8 mx-4 items-center text-center justify-center`}>
-      <StyledText className = "text-xl font-bold">Filters</StyledText>
+      <StyledView className = "w-full flex flex-row justify-start items-center">
+        <Pressable onPress = {onPressBack} style = {{flexBasis:'30%'}}>
+          <Ionicons name="chevron-back" size = {25}/>
+        </Pressable>
+        <Text className = "mt-6 font-bold text-xl ">Filters</Text>
+      </StyledView>
 
       <StyledView className = "w-full mt-6">
         <StyledText className = "font-pbold">Departure</StyledText>
@@ -121,7 +134,7 @@ const FilterScreen = ({className, ...props}) => {
         <Button text = "Reset" className = "basis-[46%]" onPress = {onPressReset}
           textColor = "text-[#FEA36B]" bgColor = "bg-[#FFFFFF]"/>
 
-        <Button text = "Done" className = "basis-[46%]"/>
+        <Button text = "Done" className = "basis-[46%]" onPress = {onPressDone} />
       </StyledView>
     </StyledView>
   )

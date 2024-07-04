@@ -54,6 +54,7 @@ const BookingScreen = () => {
     )
   }
 
+
   return (
     <StyledView className="w-full items-center"> 
       <StyledView className = {`${stateFlatList}`}>
@@ -63,7 +64,7 @@ const BookingScreen = () => {
         />
       </StyledView>
 
-      <BookingForm className = {`${stateForm}`}/>
+      <BookingForm className = {`${stateForm}`} backClick = {handlePressCard}/>
     </StyledView>
   )
 }

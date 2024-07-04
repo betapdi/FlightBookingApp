@@ -15,8 +15,8 @@ export const Button = ({className, ...props}) => {
 
   return (
     <StyledView style = {props.style} className = {`mt-8 w-full`}>
-        <Pressable onPress = {props.onPress} className = {`items-center justify-center text-center rounded-2xl ${bgColor}`}>
-            <StyledText className = {`py-3 font-bold text-lg ${textColor}`}>{props.text}</StyledText>
+        <Pressable onPress = {props.onPress} className = {`items-center justify-center text-center rounded-3xl ${bgColor}`}>
+            <StyledText className = {`py-5 font-bold text-xl ${textColor}`}>{props.text}</StyledText>
         </Pressable>
     </StyledView>
   )
