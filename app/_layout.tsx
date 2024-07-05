@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 
 import { SplashScreen, Stack } from "expo-router";
 import {BookingProvider} from './context/BookingContext'
+import {UserInfoProvider} from './context/UserInfoContext'
 import GenerateData from './gen/GenerateData'
 
 SplashScreen.preventAutoHideAsync();
@@ -39,13 +40,15 @@ const RootLayout = () => {
 
   return (
     <BookingProvider>
-      <GenerateData/>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-        <Stack.Screen name="(booking)" options={{headerShown: false}}/>
-        <Stack.Screen name="(selecting)" options={{headerShown: false}}/>
-        <Stack.Screen name="(temp)" options={{headerShown: false}}/>
-      </Stack>
+      <UserInfoProvider>
+        <GenerateData/>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+          <Stack.Screen name="(booking)" options={{headerShown: false}}/>
+          <Stack.Screen name="(selecting)" options={{headerShown: false}}/>
+          <Stack.Screen name="(temp)" options={{headerShown: false}}/>
+        </Stack>
+      </UserInfoProvider>
     </BookingProvider>
   )
 }

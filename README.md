@@ -65,5 +65,6 @@ Join our community of developers creating universal apps.
 - npm install @react-native-picker/picker --save
 - npx expo install @react-native-community/datetimepicker
 - npm install --save @ptomasroos/react-native-multi-slider
+- npx expo install expo-image-picker
 
 
