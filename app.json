@@ -20,7 +20,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gmail.lecongquochan.vietnam.flightbooking"
+      "package": "com.gmail.lecongquochan.vietnam.flightbooking",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +40,6 @@
           ]
         }
       ],
-
       [
         "expo-image-picker",
         {
@@ -47,6 +49,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "761a2098-4166-4389-ab93-c6dbf3d29c43"
+      }
     }
   }
 }
